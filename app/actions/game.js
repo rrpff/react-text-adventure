@@ -11,9 +11,23 @@ export function setCurrentRoom (roomId) {
   }
 }
 
-export function execute (command) {
+export function printMessage (message) {
   return {
-    type: 'EXECUTE_COMMAND',
-    command
+    type: 'PRINT_MESSAGE',
+    message
+  }
+}
+
+export function execute (command) {
+  return function (dispatch, getState) {
+    const state = getState().game
+    const room = state.rooms[state.currentRoomId]
+    const commandHandler = room.commands[command]
+
+    if (commandHandler) {
+      commandHandler(dispatch, state)
+    } else {
+      dispatch(printMessage('I don\'t know how to do that.'))
+    }
   }
 }

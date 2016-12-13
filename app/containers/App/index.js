@@ -25,6 +25,7 @@ export default class App extends React.Component {
   handleKeyPress (e) {
     if (e.which === 13) {
       this.props.dispatch(execute(this.state.value))
+      this.setState({ value: '' })
     }
   }
 
@@ -38,7 +39,7 @@ export default class App extends React.Component {
         </ul>
 
         {this.isStarted()
-          ? <input type="text" onChange={::this.handleChange} onKeyPress={::this.handleKeyPress} />
+          ? <input type="text" onChange={::this.handleChange} onKeyPress={::this.handleKeyPress} value={this.state.value} />
           : <button onClick={::this.initialise}>start</button>
         }
       </section>
