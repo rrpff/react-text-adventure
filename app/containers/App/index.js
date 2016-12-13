@@ -1,16 +1,31 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { startGame, setCurrentRoom } from '../../actions/game'
+import { startGame, setCurrentRoom, execute } from '../../actions/game'
 
 @connect(state => ({ game: state.game }))
 export default class App extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = { value: '' }
+  }
+
   initialise () {
     this.props.dispatch(startGame())
     this.props.dispatch(setCurrentRoom(1))
   }
 
-  isNotStarted () {
-    return !this.props.game.started
+  isStarted () {
+    return this.props.game.started
+  }
+
+  handleChange (e) {
+    this.setState({ value: e.target.value })
+  }
+
+  handleKeyPress (e) {
+    if (e.which === 13) {
+      this.props.dispatch(execute(this.state.value))
+    }
   }
 
   render () {
@@ -22,7 +37,10 @@ export default class App extends React.Component {
           )}
         </ul>
 
-        {this.isNotStarted() && <button onClick={::this.initialise}>start</button>}
+        {this.isStarted()
+          ? <input type="text" onChange={::this.handleChange} onKeyPress={::this.handleKeyPress} />
+          : <button onClick={::this.initialise}>start</button>
+        }
       </section>
     )
   }

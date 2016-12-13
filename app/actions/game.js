@@ -10,3 +10,10 @@ export function setCurrentRoom (roomId) {
     roomId
   }
 }
+
+export function execute (command) {
+  return {
+    type: 'EXECUTE_COMMAND',
+    command
+  }
+}
